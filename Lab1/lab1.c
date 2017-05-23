@@ -8,61 +8,61 @@ typedef struct node {
 	struct node *next;
 }linknode,*link;
 
-link CreatList() {//´´½¨Á´±í
-	link h = (link)malloc(sizeof(linknode));//ÎªÍ·½Úµã·ÖÅäÄÚ´æ¿Õ¼ä
-	h->next = NULL;//³õÊ¼»¯
+link CreatList() {
+	link h = (link)malloc(sizeof(linknode));
+	h->next = NULL;
 	link q = h;
 	link p;
 	do {
-		p = (link)malloc(sizeof(linknode));//ÎªĞÂ½Úµã·ÖÅäÄÚ´æ¿Õ¼ä
-		scanf("%d", &p->data);//ÊäÈë½ÚµãÊı¾İ
-		q->next = p;//½«ĞÂ½ÚµãÌí¼Óµ½Á´±íÎ²²¿
+		p = (link)malloc(sizeof(linknode));
+		scanf("%d", &p->data);
+		q->next = p;
 		q = q->next;
-	} while (getchar() != '#');//µ±¼à²âµ½ÊäÈëÎª#Ê±ÍË³öÊäÈë
+	} while (getchar() != '#');
 	q->next = NULL;
-	return h;//·µ»ØÍ·Ö¸Õë
+	return h;
 }
 
-int Adjmax(link h, int k) {//kÎªÄãÊäÈëµÄÏàÁÚ½Úµã³¤¶È£¬¸Ãº¯ÊıÓÃÓÚÕÒ³ö×î´óÏàÁÚ½ÚµãºÍ
+int Adjmax(link h, int k) {
 	int target = 0;
 	int max = 0;
 	int sum = 0;
-	link p = h->next;//Ö¸ÏòÏàÁÚ½ÚµãµÄÍ·²¿
-	link q = h->next;//Ö¸ÏòÏàÁÚ½ÚµãµÄÎ²²¿
-	for (int i = 0; i < k; i++) {//³õÊ¼»¯×î´óÖµ£¬¾ÍÊÇÕÒÇ°k¸ö½ÚµãÖµÖ®ºÍ
+	link p = h->next;
+	link q = h->next;
+	for (int i = 0; i < k; i++) {
 		sum += q->data;
 		q = q->next;
 	}
 	max = sum;
-	while (q->next != NULL) {//ÔÚÎ²Ö¸ÕëµÄnextÖ¸ÏòNULLÖ®Ç°
-		sum = sum + q->data - p->data;//¼ÆËãºÍ
-		q = q->next;//Á½¸öÖ¸ÕëËæÖ®ÒÆ¶¯
+	while (q->next != NULL) {
+		sum = sum + q->data - p->data;
+		q = q->next;
 		p = p->next;
-		if (sum > max)//µ±Ä³ºÍ´óÓÚµ±Ç°×î´óÖµÊ±
-			max = sum;//¸üĞÂ×î´óÖµ
+		if (sum > max)
+			max = sum;
 		target++;
 	}
-	return target;//·µ»ØÏàÁÚ½ÚµãµÄµÚÒ»¸ö½ÚµãÏÂ±ê
+	return target;
 }
 
 void main() {
 	int cout = 0,k,target = 1;
-	printf("ÇëÊäÈëÊı¾İ\n");
+	printf("è¯·è¾“å…¥æ•°æ®\n");
 	link L = CreatList();
 	link p = L->next;
 	for (p; p->next != NULL; p = p->next)
 		cout++;
-	printf("ÇëÊäÈëÏàÁÚ½ÚµãÊı\n");
+	printf("è¯·è¾“å…¥ç›¸é‚»èŠ‚ç‚¹æ•°\n");
 	scanf("%d", &k);
 	while (k>cout) {
-		printf("ÊäÈë²»·ûºÏÒªÇó£¬ÇëÖØĞÂÊäÈë\n");
+		printf("è¾“å…¥ä¸ç¬¦åˆè¦æ±‚ï¼Œè¯·é‡æ–°è¾“å…¥\n");
 		scanf("%d", &k);
 	}
 	target = Adjmax( L, k);
 	p = L->next;
 	for (int i = 1; i < target; i++)
 		p = p->next;
-	printf("ĞòºÅ%d,dataÖµ%d\n", target, p->data);
+	printf("åºå·%d,dataå€¼Öµ%d\n", target, p->data);
 	p = L->next;
 	system("pause");
 }
