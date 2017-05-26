@@ -25,6 +25,7 @@ wlink SeparateArticle(link h){
                 i++;flag = 0;
             }
         else if (!flag) {
+            p->word[i] = '\0';
             q->next = p;
             q = q->next;
             p = (wlink)malloc(sizeof(wlinknode));
@@ -36,12 +37,6 @@ wlink SeparateArticle(link h){
         q = q->next;
     }
     q->next = NULL;
-    p = L->next;
-    for (p;p!=NULL;p=p->next){
-       for (int i=0;p->word[i]<='z'&&p->word[i]>='0';i++) printf("%c",p->word[i]);
-        printf("\n");
-    }
-    //free(p);
     return L;
 }
 
@@ -64,7 +59,6 @@ link CreatArticle(){
         printf("%c",p->data);
     }
     printf("\n");
-    //free(p);
     return h;
 }
 
@@ -113,14 +107,36 @@ void Sort(wlink A){//得到首尾指针，排序
     QuickSort(p,q);
 }
 
+/*void calculate(wlink L){
+    int cont = 0,num = 0,mincont = 0;
+    
+    char arr[10][20];
+    char temp[20];
+    wlink q = L->next;
+    strcpy(temp,q->word);
+    q = q->next;
+    while (q->next!=NULL){
+        if (strcmp(temp,q->word)==0){
+            cont++;
+        }
+        else{
+            if (cont>mincont && num>10){
+                mincont = cont;
+
+            } 
+            else if (cont>mincont)
+        }
+    }
+}*/
 
 void main(){
     link head = CreatArticle();
     wlink L = SeparateArticle(head);
     Sort(L);
     wlink q = L->next;
+    printf("\n");
     for (q;q!=NULL;q=q->next){
-        for (int i=0;q->word[i]<='z'&&q->word[i]>='0';i++) printf("%c",q->word[i]);
+        printf("%s",q->word);
         printf("\n");
     }
     system("pause");
