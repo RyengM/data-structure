@@ -24,9 +24,9 @@ link CreatArticle(){//分割单词，建立链表
             printf("Can't find the file,please input again\n");
         }
         else break;
-    }
+    }        
+
     
-    //FILE *fp = fopen("D:\\Lab6.txt","r");
     p = (link)malloc(sizeof(linknode));
     while (!feof(fp)){//未读到文章结尾则继续循环，将单词进行分割并存入链表
         fscanf(fp,"%c",&temp);
@@ -55,12 +55,13 @@ link CreatArticle(){//分割单词，建立链表
     else q->next = NULL;
     fclose(fp);
     ///////////输出
-    p = h->next;
-    for (p;p!=NULL;p=p->next){
-        printf("%s\n",p->data);
-    }
-    printf("\n");
+    //p = h->next;
+    //for (p;p!=NULL;p=p->next){
+    //    printf("%s\n",p->data);
+    //}
+    //printf("\n");
     ///////////
+    while (p!=NULL) p=p->next;
     free(p);
     return h;
 }
