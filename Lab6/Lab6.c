@@ -3,141 +3,176 @@
 #include <string.h>
 
 typedef struct node{
-    char data;
+    int cont;
+    char data[20];
     struct node *next;
 }linknode,*link;
 
-typedef struct wnode{
-    char word[20];
-    struct wnode *next;
-}wlinknode,*wlink;
-
-wlink SeparateArticle(link h){
-    int i = 0, flag = 0;
-    wlink L = (wlink)malloc(sizeof(wlinknode));
-    wlink q = L;
-    wlink p = (wlink)malloc(sizeof(wlinknode));
-    link s = h->next;
-    for (s;s->next!=NULL;s=s->next){
-        if ((s->data>='0'&&s->data<='9')||(s->data>='a'&&s->data<='z')||
-            (s->data>='A'&&s->data<='Z')||s->data=='_'){
-                p->word[i] = s->data;
-                i++;flag = 0;
-            }
-        else if (!flag) {
-            p->word[i] = '\0';
-            q->next = p;
-            q = q->next;
-            p = (wlink)malloc(sizeof(wlinknode));
-            i=0;flag = 1;
-        }
-    }
-    if (!flag){
-        q->next = p;
-        q = q->next;
-    }
-    q->next = NULL;
-    return L;
-}
-
-link CreatArticle(){
+link CreatArticle(){//分割单词，建立链表
+    int i = 0,flag = 0;
+    char temp;
     link h = (link)malloc(sizeof(linknode));
     h->next = NULL;
     link q = h;
     link p;
     FILE *fp = fopen("D:\\Lab6.txt","r");
+    p = (link)malloc(sizeof(linknode));
     while (!feof(fp)){
-        p = (link)malloc(sizeof(linknode));
-        fscanf(fp,"%c",&p->data);
+        fscanf(fp,"%c",&temp);
+        if ((temp>='0'&&temp<='9')||temp=='_'||(temp>='a'&&temp<='z')){
+            p->data[i] = temp;
+            i++;flag = 0;
+        }
+        else if (temp>='A'&&temp<='Z'){
+            p->data[i] = temp+32;
+            i++;flag = 0;
+        }
+        else if (!flag){
+            p->data[i] = '\0';
+            q->next = p;
+            q = q->next;
+            p = (link)malloc(sizeof(linknode));
+            i = 0;flag = 1;
+        }
+    }
+    if ((temp>='0'&&temp<='9')||temp=='_'||(temp>='a'&&temp<='z')||(temp>='A'&&temp<='Z')){
+        p->data[i-1] = '\0';
         q->next = p;
         q = q->next;
+        q->next = NULL;
     }
-    q->next = NULL;
+    else q->next = NULL;
     fclose(fp);
+    ///////////输出
     p = h->next;
-    for (p;p->next!=NULL;p=p->next){
-        printf("%c",p->data);
+    for (p;p!=NULL;p=p->next){
+        printf("%s\n",p->data);
     }
     printf("\n");
+    ///////////
+    free(p);
     return h;
 }
 
-void swap(wlink a,wlink b){//交换表中的值
-    char temp[20];
-    strcpy(temp,a->word);
-    strcpy(a->word,b->word);
-    strcpy(b->word,temp);
-}
-
-wlink Partion(wlink begin,wlink end){//单链表的快速排序
-    char key[20];
-    strcpy(key,begin->word);
-    wlink p = begin;
-    wlink q = p->next;
-    wlink pre = begin;
-    while (pre!=end){
-        if (strcmp(q->word,key)<0){
-            p = p->next;
-            swap(p,q);
+link SortArticle(link head){//进行单词字典序的链表排序
+    link L = (link)malloc(sizeof(linknode));//新建表头
+    L->next = NULL;
+    link pre = L;//q指针的前驱
+    link q = L->next;
+    link p;//进行链表操作
+    link t = head->next;//从未排序的链表中取单词
+    while (t!=NULL){//排序
+        int flag = 0;
+        if(L->next == NULL){//若为空表直接插入单元
+            p = (link)malloc(sizeof(linknode));
+            strcpy(p->data,t->data);
+            p->cont = 0;
+            pre->next = p;
+            pre = pre->next;
+            pre->next = NULL;
         }
-        q = q->next;
-        pre = pre->next;
-    }
-    swap(p,begin);
-    return p;
-}
-
-void QuickSort(wlink begin,wlink end){//快排递归
-    if (begin!=end){
-        wlink mid = Partion(begin,end);
-        if (mid != end){
-            QuickSort(begin,mid);
-            QuickSort(mid->next,end);
+        else{//若不为空表
+            pre = L;
+            q = L->next;
+            p = (link)malloc(sizeof(linknode));
+            strcpy(p->data,t->data);
+            while (q!=NULL){//遍历链表
+                if (strcmp(p->data,q->data)==0){//去除重复单词并计数
+                    q->cont++;flag = 1;
+                    break;
+                }
+                else if (strcmp(p->data,q->data)<0){//插入目标单词，做到排序
+                    p->cont = 0;
+                    pre->next = p;
+                    pre = pre->next;
+                    pre->next = q;
+                    flag = 1;
+                    break;
+                }
+                else{
+                    pre = pre->next;
+                    q = q->next;
+                    if (q!=NULL) q->cont = 0;
+                }
+            }
+            if (!flag){
+                p->cont = 0;
+                q = p;
+            }
         }
-        else QuickSort(begin,mid);
+        t = t->next;//查找下一个单词
+    }    
+    /////////////输出
+    p = L->next;
+    printf("\n");
+    for (p;p!=NULL;p=p->next){
+        printf("%s\n",p->data);
     }
+    printf("\n");
+    /////////////
+    free(p);
+    return L;
 }
 
-void Sort(wlink A){//得到首尾指针，排序
-    wlink p = A->next;
-    wlink q = A->next;
-    while (q->next!=NULL){
-        q = q->next;
-    }
-    QuickSort(p,q);
-}
-
-/*void calculate(wlink L){
-    int cont = 0,num = 0,mincont = 0;
-    
-    char arr[10][20];
-    char temp[20];
-    wlink q = L->next;
-    strcpy(temp,q->word);
-    q = q->next;
-    while (q->next!=NULL){
-        if (strcmp(temp,q->word)==0){
-            cont++;
+void FindGiggestNumber(link L){//根据出现次数进行链表排序
+    link s = (link)malloc(sizeof(linknode));
+    s->next = NULL;
+    link pre = s;
+    link q = s->next;
+    link p;
+    link t = L->next;
+    while (t!=NULL){
+        int flag = 0;
+        if (s->next == NULL){
+            p = (link)malloc(sizeof(linknode));
+            strcpy(p->data,t->data);
+            p->cont = 0;
+            pre->next = p;
+            pre = pre->next;
+            pre->next = NULL;
         }
         else{
-            if (cont>mincont && num>10){
-                mincont = cont;
-
-            } 
-            else if (cont>mincont)
+            pre = L;
+            q = L->next;
+            p = (link)malloc(sizeof(linknode));
+            strcpy(p->data,t->data);
+            while (q!=NULL){//遍历链表
+                if (p->cont<q->cont){
+                    pre->next = p;
+                    pre = pre->next;
+                    pre->next = q;
+                    flag = 1;
+                    break;
+                }
+                else if (p->cont==q->cont && q->next!=NULL){
+                    q->next = p;
+                    q->next = q->next->next;
+                    flag = 1;
+                    break;
+                }
+                else if (p->cont>q->cont){
+                    pre = pre->next;
+                    q = q->next;
+                }
+                if (!flag) q = p;
+            }
         }
+        t = t->next;
     }
-}*/
+    /////////////输出
+    p = s->next;
+    printf("\n");
+    for (int i=0;p!=NULL&&i<10;p=p->next,i++){
+        printf("%s\t%d\n",p->data,p->cont);
+    }
+    printf("\n");
+    /////////////
+    free(p);
+}
 
 void main(){
     link head = CreatArticle();
-    wlink L = SeparateArticle(head);
-    Sort(L);
-    wlink q = L->next;
-    printf("\n");
-    for (q;q!=NULL;q=q->next){
-        printf("%s",q->word);
-        printf("\n");
-    }
+    link L = SortArticle(head);
+    FindGiggestNumber(L);
     system("pause");
 }
