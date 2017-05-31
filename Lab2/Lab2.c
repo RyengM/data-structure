@@ -139,7 +139,7 @@ double PostCount(char post[]) {
 	return num[j-1];
 }
 
-void main() {
+int main() {
 	slink top = NULL;
 	int i = 0;
 	double result;
@@ -163,4 +163,5 @@ void main() {
 	result = PostCount(b);
 	printf("%llf\n", result);
 	system("pause");
+	return 0;
 }

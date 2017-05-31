@@ -53,7 +53,7 @@ char DeQueue(linkqueue *q){
     }
 }
 
-void main(){
+int main(){
     char c,target;
     linkqueue *q;
     Qlink p;
@@ -80,4 +80,5 @@ void main(){
             EnQueue(q,c);
         }
     }
+    return 0;
 }

@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <conio.h>
 
 typedef struct node{
     int cont;
@@ -217,7 +218,7 @@ void ShowResultBefore(){//显示上一次保存的内容
     }
 }
 
-void main(){
+int main(){
     char c;
     ShowResultBefore();
     link head = CreatArticle();
@@ -266,4 +267,5 @@ void main(){
         }
     }
     system("pause");
+    return 0;
 }

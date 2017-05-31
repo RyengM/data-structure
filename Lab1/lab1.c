@@ -45,24 +45,25 @@ int Adjmax(link h, int k) {
 	return target;
 }
 
-void main() {
+int main() {
 	int cout = 0,k,target = 1;
-	printf("请输入数据\n");
+	printf("Please input the data\n");
 	link L = CreatList();
 	link p = L->next;
 	for (p; p->next != NULL; p = p->next)
 		cout++;
-	printf("请输入相邻节点数\n");
+	printf("Please input the number of adjacent nodes\n");
 	scanf("%d", &k);
 	while (k>cout) {
-		printf("输入不符合要求，请重新输入\n");
+		printf("illegal input, please input again\n");
 		scanf("%d", &k);
 	}
 	target = Adjmax( L, k);
 	p = L->next;
 	for (int i = 1; i < target; i++)
 		p = p->next;
-	printf("序号%d,data值ֵ%d\n", target, p->data);
+	printf("No.%d,data ֵ%d\n", target, p->data);
 	p = L->next;
 	system("pause");
+	return 0;
 }
