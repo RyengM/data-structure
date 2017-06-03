@@ -48,7 +48,7 @@ char GetsTop(slink S) {
 	return (0);
 }
 
-int Precede(char x, char y) {
+int Precede(char x, char y) {//栈顶优先级比较
 	switch (x) {
         case '#': x = -1;break;
 		case '(': x = 0; break;
@@ -68,7 +68,7 @@ int Precede(char x, char y) {
 	else return 0;
 }
 
-void mid_post(char post[], char mid[]) {
+void mid_post(char post[], char mid[]) {//进行中后缀表达转换
 	int i = 0, j = 0;
 	char x;
 	slink S = NULL;
@@ -81,14 +81,14 @@ void mid_post(char post[], char mid[]) {
 				while (!EmptyStack(S))
 					post[j++] = Pop(&S);
 			}break;
-			case  ')': {
+			case  ')': {//在遇到（前运算符出栈并进入表达式
 				post[j++] = ' ';
 				while (GetsTop(S) != '(')
 					post[j++] = Pop(&S);
 				Pop(&S);
 				post[j++] = ' ';
 			}break;
-			case '+':
+			case '+'://运算符入栈
 			case '-':
 			case '*':
 			case '/':
@@ -100,14 +100,14 @@ void mid_post(char post[], char mid[]) {
 				if (post[j-1] != ' ')
 					post[j++] = ' ';
 			}break;
-			default:post[j++] = x;
+			default:post[j++] = x;//数字直接进入表达式
 		}
 	} while (x != '#');
     for (int t=0;post[t]!='#';t++) printf("%c",post[t]);
     printf("\n");
 }
 
-double PostCount(char post[]) {
+double PostCount(char post[]) {//后序计算
 	int i = 0,j = 0,k,flag=0;
 	double cont = 1,num[10];
 	char x;
