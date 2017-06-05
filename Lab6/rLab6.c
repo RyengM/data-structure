@@ -27,7 +27,6 @@ link CreatArticle(){//分割单词，建立链表
         else break;
     }        
 
-    
     p = (link)malloc(sizeof(linknode));
     while (!feof(fp)){//未读到文章结尾则继续循环，将单词进行分割并存入链表
         fscanf(fp,"%c",&temp);
@@ -61,9 +60,8 @@ link CreatArticle(){//分割单词，建立链表
     //    printf("%s\n",p->data);
     //}
     //printf("\n");
-    ///////////
-    while (p!=NULL) p=p->next;
-    free(p);
+    //while (p!=NULL) p=p->next;
+    ///////////////
     return h;
 }
 
@@ -109,7 +107,8 @@ link SortArticle(link head){//进行单词字典序的链表排序
             }
             if (!flag){
                 p->cont = 1;
-                q = p;
+                pre->next = p;
+                pre->next->next = NULL;
             }
         }
         t = t->next;//查找下一个单词
@@ -122,7 +121,6 @@ link SortArticle(link head){//进行单词字典序的链表排序
     //}
     //printf("\n");
     /////////////
-    free(p);
     return L;
 }
 
@@ -201,14 +199,13 @@ link FindGiggestNumber(link L){//根据出现次数进行链表排序
     while (p!=NULL) p=p->next;//将p指针导向表尾
     //printf("\n");
     /////////////
-    free(p);
     return s;
 }
 
 void ShowResultBefore(){//显示上一次保存的内容
     FILE *fp;
     char temp;
-    if ((fp=fopen("D:\\res.txt","r"))!=NULL){
+    if ((fp=fopen("res.txt","r"))!=NULL){
         printf("The last result of ten most frequently occurring words are:\n\n");
         while (!feof(fp)){
             fscanf(fp,"%c",&temp);
@@ -218,7 +215,7 @@ void ShowResultBefore(){//显示上一次保存的内容
     }
 }
 
-void WordApearCount(link s){
+void WordAppearCount(link s){
     int times,flag = 0;
     char word[20];
     printf("\nplease input the word you want to search\n");
@@ -244,7 +241,7 @@ int main(){
     link L = SortArticle(head);
     link s = FindGiggestNumber(L);
     link p = s->next;
-    FILE *fp = fopen("D:\\res.txt","w");
+    FILE *fp = fopen("res.txt","w");
     //////////////输出到txt文件
     for (int i=0;i<10&&p!=NULL;i++){
         fprintf(fp,"%s\t%d\n",p->data,p->cont);
@@ -283,11 +280,12 @@ int main(){
                 break;
             }
             case 'd': {
-                WordApearCount(s);
+                WordAppearCount(s);
                 break;
             }
             case 'e': {
-                remove("D:\\res.txt");
+                if (_unlink("res.txt")==-1) printf("initial failed\n");
+                else printf("initial success\n");
                 break;
             }
             case 'f': exit(0);

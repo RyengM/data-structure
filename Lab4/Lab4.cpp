@@ -55,6 +55,14 @@ void Inorder(BTptr T){//进行中序遍历
     }
 }
 
+void freeBtree(BTptr BT){
+    if (BT!=NULL){
+        freeBtree(BT->Lchild);
+        freeBtree(BT->Rchild);
+        free(BT);
+    }
+}
+
 int main(){
     char word[40][20];
     BTptr BT;

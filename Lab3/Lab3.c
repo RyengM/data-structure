@@ -44,7 +44,7 @@ void EnQueue(linkqueue *q,char e){
 
 char DeQueue(linkqueue *q){
     Qlink p;
-    if (q->front == q->rear) return 0;
+    if (EmptyQueue(q)) printf("the queue is already empty\n");
     else{
         p = q->front;
         q->front = p->next;
@@ -60,12 +60,12 @@ int main(){
     CreatQueue(q);
     while (1){
         scanf("%c",&c);
-        if (c == '0'){//输入为0时栈顶出栈
+        if (c == '0'){//输入为0时出队
             printf("execution of dequeue\n");
             printf("%c\n\n",DeQueue(q));
         }
         else if (c == '\n'|| c==' ') continue;
-        else if (c == '@'){//输入为@时全部出栈
+        else if (c == '@'){//输入为@时全部出队
             printf("execution of dequeue\n");
             p = q->front->next;
             while (p != NULL){
@@ -76,7 +76,7 @@ int main(){
             printf("\n\n");
             ClearQueue(q);
         }
-        else{//入栈
+        else{//入队
             EnQueue(q,c);
         }
     }

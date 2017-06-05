@@ -47,23 +47,31 @@ int Adjmax(link h, int k) {
 
 int main() {
 	int cout = 0,k,target = 1;
-	printf("Please input the data\n");
-	link L = CreatList();
-	link p = L->next;
-	for (p; p->next != NULL; p = p->next)
-		cout++;
-	printf("Please input the number of adjacent nodes\n");
-	scanf("%d", &k);
-	while (k>cout) {
-		printf("illegal input, please input again\n");
+	while (1){
+		printf("Please input the data\n");
+		link L = CreatList();
+		link p = L->next;
+		link temp;
+		for (p; p->next != NULL; p = p->next)
+			cout++;
+		printf("Please input the number of adjacent nodes\n");
 		scanf("%d", &k);
+		while (k>cout) {
+			printf("illegal input, please input again\n");
+			scanf("%d", &k);
+		}
+		target = Adjmax( L, k);
+		p = L->next;
+		for (int i = 1; i < target; i++)
+			p = p->next;
+		printf("No.%d,data ֵ%d\n\n", target, p->data);
+		p = L->next;
+		while (L!=NULL){
+			temp = L;
+			L = L->next;
+			free(temp);
+		}
 	}
-	target = Adjmax( L, k);
-	p = L->next;
-	for (int i = 1; i < target; i++)
-		p = p->next;
-	printf("No.%d,data ֵ%d\n", target, p->data);
-	p = L->next;
 	system("pause");
 	return 0;
 }
