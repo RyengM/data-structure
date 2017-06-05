@@ -218,6 +218,25 @@ void ShowResultBefore(){//显示上一次保存的内容
     }
 }
 
+void WordApearCount(link s){
+    int times,flag = 0;
+    char word[20];
+    printf("\nplease input the word you want to search\n");
+    gets(word);
+    link p = s->next;
+    while (p!=NULL){
+        if (strcmp(p->data,word)==0) {
+            times = p->cont;
+            p = p->next;
+            flag = 1;
+            break;
+        }
+        else p = p->next;
+    }
+    if (!flag) printf("this word is not exit in the article\n");
+    else printf("the occurrence of the word is:%d\n",times);
+}
+
 int main(){
     char c;
     ShowResultBefore();
@@ -234,7 +253,7 @@ int main(){
     //////////////////////////
     fclose(fp);
     while (1){
-        printf("\nPlease choose what you want to do\na: show the article\nb: show the words by lexicographical order\nc: show the words by frequency of occurrence\nd: exit\n");
+        printf("\nPlease choose what you want to do\na: show the article\nb: show the words by lexicographical order\nc: show the words by frequency of occurrence\nd: find the occurence of a certain word\ne: init\nf: exit\n");
         c = getch();
         switch (c){
             case 'a': {
@@ -263,7 +282,15 @@ int main(){
                 printf("\n");
                 break;
             }
-            case 'd': exit(0);
+            case 'd': {
+                WordApearCount(s);
+                break;
+            }
+            case 'e': {
+                remove("D:\\res.txt");
+                break;
+            }
+            case 'f': exit(0);
         }
     }
     system("pause");

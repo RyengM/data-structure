@@ -68,6 +68,7 @@ int main(){
     }
     BT = CreatLBtree(word,i+1);
     Inorder(BT);
+    cout<<endl;
     system("pause");
     return 0;
 }

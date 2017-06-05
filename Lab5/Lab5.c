@@ -141,7 +141,7 @@ void TopSort(vexnode G[],int n){
         }
     }
     if (count == n) printf("\nThis graph has no cycle\n");
-    else printf("This graph has cycle\n");
+    else printf("\nThis graph has cycle\n");
 }
 
 int main(){

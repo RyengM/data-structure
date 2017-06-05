@@ -69,7 +69,7 @@ int Precede(char x, char y) {//栈顶优先级比较
 }
 
 void mid_post(char post[], char mid[]) {//进行中后缀表达转换
-	int i = 0, j = 0;
+	int i = 0, j = 0,flag = 1;
 	char x;
 	slink S = NULL;
 	Push(&S, '#');
@@ -78,8 +78,10 @@ void mid_post(char post[], char mid[]) {//进行中后缀表达转换
 		switch (x) 
 		{
 			case '#': {
-				while (!EmptyStack(S))
+				while (!EmptyStack(S)){
+					post[j++] = ' ';
 					post[j++] = Pop(&S);
+				}
 			}break;
 			case  ')': {//在遇到（前运算符出栈并进入表达式
 				post[j++] = ' ';
@@ -94,13 +96,21 @@ void mid_post(char post[], char mid[]) {//进行中后缀表达转换
 			case '/':
 			case '(':
 			{
+				if (x=='-' && flag){
+					post[j++] = x;
+					break;
+				}
 				while (Precede(GetsTop(S), x))
 					post[j++] = Pop(&S);
 				Push(&S, x);
 				if (post[j-1] != ' ')
 					post[j++] = ' ';
+				flag = 1;
 			}break;
-			default:post[j++] = x;//数字直接进入表达式
+			default:{
+				post[j++] = x;//数字直接进入表达式
+				flag = 0;
+			}
 		}
 	} while (x != '#');
     for (int t=0;post[t]!='#';t++) printf("%c",post[t]);
@@ -108,7 +118,7 @@ void mid_post(char post[], char mid[]) {//进行中后缀表达转换
 }
 
 double PostCount(char post[]) {//后序计算
-	int i = 0,j = 0,k,flag=0;
+	int i = 0,j = 0,k,flag=0,sub=0;
 	double cont = 1,num[10];
 	char x;
 	memset(num,0,sizeof(double)*10);
@@ -116,13 +126,21 @@ double PostCount(char post[]) {//后序计算
 		x = post[i];
 		switch (x) {
 			case ' ': { if (post[i-1] >= '0' && post[i-1] <='9') {cont=1;j++;flag=0;}
+						if (sub) num[j-1] = -num[j-1];
+						sub = 0;
 						break;
 			}			
 			case '.': flag = 1; cont = 0.1; break;
-			case '+': num[j-2] = num[j-1]+ num[j-2];j--;num[j]=0;break;
-			case '-': num[j-2] = num[j-1]- num[j-2];j--;num[j]=0;break;
-			case '*': num[j-2] = num[j-1]* num[j-2];j--;num[j]=0;break;
-			case '/': num[j-2] = num[j-1]/ num[j-2];j--;num[j]=0;break;
+			case '+': num[j-2] = num[j-2]+ num[j-1];j--;num[j]=0;break;
+			case '-': {
+						if (post[i+1]<='9'&&post[i+1]>='0')
+							sub = 1;
+						else {
+							num[j-2] = num[j-2]- num[j-1];j--;num[j]=0;break;
+						}
+					}
+			case '*': num[j-2] = num[j-2]* num[j-1];j--;num[j]=0;break;
+			case '/': num[j-2] = num[j-2]/ num[j-1];j--;num[j]=0;break;
 			default: {	k = post[i] - '0'; 
 						if (!flag){
 							num[j] = num[j]*cont + k;
@@ -141,22 +159,37 @@ double PostCount(char post[]) {//后序计算
 
 int main() {
 	slink top = NULL;
-	int i = 0;
+	int i = 0,flag=0;
 	double result;
 	char a[100];
 	char b[100];
 	printf("Please enter the expression\n");
 	while(1) {
-		scanf("%c",&a[i]);
-		if ((a[i] > 47 && a[i] < 58) || a[i] == 43 || a[i] == 45 || a[i] == 47 || a[i] == 42 || a[i] == 40 || a[i] == 41|| a[i] == 46) {
-			i++;
-		}
-		else if (a[i] == 10) continue;
-		else if (a[i] == 35) break;
-		else {
-			printf("the expression you enput is illegal,please input again\n");
-			i = 0;
-			memset(a, 0, 100 * sizeof(char));
+		if (flag) break;
+		gets(a);
+		for (int j=0;j<strlen(a);j++){
+			if (a[i]==a[i-1]&&(a[i]=='+'||a[i]=='-'||a[i]=='*'||a[i]=='/'||a[i]=='('||a[i]==')')) {
+				printf("the expression you input is illegal,please input again\n");
+				i = 0;
+				memset(a, 0, 100 * sizeof(char));
+				break;
+			}
+			else if (a[i]=='0'&&a[i-1]=='/'){
+				printf("the expression you input is illegal,please input again\n");
+				i = 0;
+				memset(a, 0, 100 * sizeof(char));
+				break;
+			}
+			else if ((a[i] > 47 && a[i] < 58) || a[i] == 43 || a[i] == 45 || a[i] == 47 || a[i] == 42 || a[i] == 40 || a[i] == 41|| a[i] == 46) {
+				i++;
+			}
+			else if (a[i] == 10) continue;
+			else if (a[i] == 35) {flag=1;break;}
+			else {
+				printf("the expression you input is illegal,please input again\n");
+				i = 0;
+				memset(a, 0, 100 * sizeof(char));
+			}
 		}
 	}
 	mid_post(b,a);
