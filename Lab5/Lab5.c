@@ -149,5 +149,5 @@ int main(){
     int n = CreatTeorlist(G);
     TopSort(G,n);
     system("pause");
-    return 0;
+    return 1;
 }
