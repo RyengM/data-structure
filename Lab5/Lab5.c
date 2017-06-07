@@ -64,13 +64,13 @@ int locateVex(vexnode G[],char e,int n){
     else return i;
 }
 
-int CreatTeorlist(vexnode G[]){
+int CreatTeorlist(vexnode G[]){//建立十字链表
     int i=0,j,n=0;
     arcnode *p;
     char ch,u,v;
     printf("Please input the vexnodes\n");
     ch = getchar();
-    while (ch!='#'){
+    while (ch!='#'){//建立顶点表
         if (ch==' ') {ch = getchar(); continue;}
         n++;
         G[i].data = ch;
@@ -102,7 +102,7 @@ int CreatTeorlist(vexnode G[]){
     return n;
 }
 
-void CreatId(vexnode G[],int n,int id[]){
+void CreatId(vexnode G[],int n,int id[]){//返回定点入度
     int count,i;
     arcnode *p;
     for (i=0;i<n;i++){
@@ -116,7 +116,7 @@ void CreatId(vexnode G[],int n,int id[]){
     }
 }
 
-void TopSort(vexnode G[],int n){
+void TopSort(vexnode G[],int n){//拓扑排序
     int i,j,k,count,id[50];
     arcnode *p;
     slink s = (slink)malloc(sizeof(snode));

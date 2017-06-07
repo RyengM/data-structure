@@ -55,7 +55,7 @@ void Inorder(BTptr T){//进行中序遍历
     }
 }
 
-void freeBtree(BTptr BT){
+void freeBtree(BTptr BT){//释放空间
     if (BT!=NULL){
         freeBtree(BT->Lchild);
         freeBtree(BT->Rchild);
