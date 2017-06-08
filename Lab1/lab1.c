@@ -23,7 +23,7 @@ link CreatList() {
 	return h;
 }
 
-int Adjmax(link h, int k) {
+int Adjmax(link h, int k) {//找到相邻k个数之和最大的第一个数，并记录最大值
 	int target = 0;
 	int max = 0;
 	int sum = 0;
