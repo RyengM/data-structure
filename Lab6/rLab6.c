@@ -215,7 +215,7 @@ void ShowResultBefore(){//显示上一次保存的内容
     }
 }
 
-void WordAppearCount(link s){
+void WordAppearCount(link s){//查找特定单词的出现次数
     int times,flag = 0;
     char word[20];
     printf("\nplease input the word you want to search\n");
